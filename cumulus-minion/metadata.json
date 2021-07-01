@@ -1,0 +1,10 @@
+{
+    "name": "test/cumulus-minion",
+    "versions": [{
+        "version": "0.1.0",
+        "providers": [{
+            "name": "virtualbox",
+            "url": "output-vagrant/package.box"
+        }]
+    }]
+}

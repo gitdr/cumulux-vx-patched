@@ -1,0 +1,28 @@
+{
+    "builders": [{
+        "type": "vagrant",
+        "communicator": "ssh",
+        "source_path": "CumulusCommunity/cumulus-vx",
+        "box_version": "4.1.1"
+    }],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "S10rename_eth_swp.sh",
+            "destination": "/tmp/S10rename_eth_swp.sh"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo curl -fsSL -o /usr/share/keyrings/salt-archive-keyring.gpg https://repo.saltproject.io/py3/debian/10/amd64/3003/salt-archive-keyring.gpg",
+                "echo 'deb http://ftp.us.debian.org/debian/ buster main contrib non-free' | sudo tee -a /etc/apt/sources.list > /dev/null",
+                "echo \"deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg] https://repo.saltproject.io/py3/debian/10/amd64/3003 buster main\" | sudo tee /etc/apt/sources.list.d/salt.list > /dev/null",
+                "sudo apt update",
+                "sudo apt-get install -y salt-minion",
+                "sudo systemctl disable salt-minion",
+                "sudo mv /tmp/S10rename_eth_swp.sh /etc/hw_init.d/S10rename_eth_swp.sh",
+                "sudo chmod 755 /etc/hw_init.d/S10rename_eth_swp.sh",
+                "sudo apt clean"
+        ]}
+    ]
+}
